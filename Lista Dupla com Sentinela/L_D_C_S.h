@@ -46,6 +46,31 @@ Lista* lista_cria(){
 return l;
 }
 
+void lista_insere(Lista* l, T elemento, int posicao){
+	if(posicao >= l->tam){ 
+		posicao = l->tam-1;
+	}else if(posicao < 0){
+		posicao = 0;
+	}
+
+	No* aux1 = l->primeiro;
+	No* aux2;
+	No* n = no_cria(elemento);
+	int i=0;
+
+	while(i <= posicao){
+		aux2 = aux1;
+		aux1 = aux1->prox;
+		i++;
+	}
+	
+	n->ant = aux2;
+	n->prox = aux1;
+	aux2->prox = n;
+	aux1->ant = n;
+	l->tam++;
+}
+
 void lista_insere_fim(Lista* l, T elemento){
 	No* n = no_cria(elemento);
 	No* aux = l->primeiro->ant;
@@ -126,12 +151,32 @@ int lista_contem(Lista* l, T elemento, int (*compara)(void*,void*)){
 	No* aux = l->primeiro->prox;
 	while(aux != l->primeiro){
 		if(compara(&elemento, aux->dado) == 0){
-			return i+1;
+			return 1;
 		}
 		i++;
 		aux = aux->prox;
 	}
 return 0;
+}
+
+int lista_posicao(Lista* l, T elemento, int (*compara)(void*,void*)){
+	if(l == NULL) return -1;
+	int i=-1;
+	No* aux = l->primeiro->prox;
+	while(aux != l->primeiro){
+		if(compara(&elemento, aux->dado) == 0){
+			return i+1;
+		}
+		i++;
+		aux = aux->prox;
+	}
+return -1;
+}
+
+int lista_tamanho(Lista* l){
+	if(l == NULL) return -1;
+	else
+		return l->tam;
 }
 
 T* lista_remove1(Lista* l, int posicao){
@@ -142,15 +187,40 @@ T* lista_remove1(Lista* l, int posicao){
 		posicao = 0;
 	}
 
-	No* aux = l->primeiro;
+	No* aux1 = l->primeiro;
+	No* aux2;
 	int i=0;
-	while(i < posicao){
-		aux = aux->prox;
+	while(i <= posicao){
+		aux2 = aux1;
+		aux1 = aux1->prox;
 		i++;
 	}
 
-	l->primeiro->ant = aux->ant;
-	aux->ant->prox = l->primeiro;
+	aux1->prox->ant = aux2;
+	aux2->prox = aux1->prox;
 
-return (aux->dado);
+return (aux1->dado);
+}
+
+int lista_remove2(Lista* l, int posicao, T* endereco){
+	if(l == NULL) return 0;
+	if(posicao >= l->tam){ 
+		posicao = l->tam-1;
+	}else if(posicao < 0){
+		posicao = 0;
+	}
+
+	No* aux1 = l->primeiro;
+	No* aux2;
+	int i=0;
+	while(i <= posicao){
+		aux2 = aux1;
+		aux1 = aux1->prox;
+		i++;
+	}
+
+	aux1->prox->ant = aux2;
+	aux2->prox = aux1->prox;
+	*endereco = *aux1->dado;
+return 1;
 }

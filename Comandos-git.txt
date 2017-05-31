@@ -1,0 +1,26 @@
+#### PRINCIPAIS COMANDO GIT ####
+
+- Para configurar
+git config --global user.name "YOUR NAME"
+git config --global user.email "YOUR EMAIL ADDRESS"
+
+- Clonando repositorio
+git clone https://github.com/................
+
+- Verificando status
+git status
+
+- Adicionando modificações
+git add .
+
+- Comitando todas as modificações
+git commit -m "COMENTARIO...."
+
+- Mandando para o Git
+git push
+	## nesse momento é necessario senha e user do github.
+
+- Atualizando seu git com a nuvem
+git pull
+
+
